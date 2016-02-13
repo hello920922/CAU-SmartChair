@@ -6,7 +6,8 @@
 > #### The abstract methods
     @Override
     protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record)
-      - Define what you want when an available bluetooth device is discovered.
+      - Define what you want when an available is discovered.
+        (Available device means a bluetooth device including readable, writable, notification characteristic.)
 >
     @Override
     public void readHandler(byte[] data)
