@@ -25,6 +25,9 @@
 >
     public void disconnect()
       - Disconnect with the connected device
+>
+    public void writeMessage(byte[] message)
+      - Send data to the connected device
 
 ## BeaconRecord Class
 > ### The class about beacon information.
