@@ -1,7 +1,7 @@
 # CAU-SmartChair API Guide
 
 ## BLEConnector Class
-### The class about bluetooth api. Users can use followed methods
+> ### The class about bluetooth api. Users can use followed methods
     
 > #### The abstract functions
     @Override
