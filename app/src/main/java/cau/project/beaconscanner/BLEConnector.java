@@ -27,11 +27,11 @@ import java.util.List;
  */
 public abstract class BLEConnector extends Handler{
     // Define constant to process handler message
-    public static final int BLUETOOTH_READ_MESSAGE = 3;
-    public static final int BLUETOOTH_WRITE_MESSAGE = 4;
-    public static final int BLUETOOTH_DISCOVERY_MESSAGE = 0;
-    public static final int BLUETOOTH_CONNECT_MESSAGE = 1;
-    public static final int BLUETOOTH_NOT_SUPPORT_MESSAGE = 2;
+    private static final int BLUETOOTH_READ_MESSAGE = 3;
+    private static final int BLUETOOTH_WRITE_MESSAGE = 4;
+    private static final int BLUETOOTH_DISCOVERY_MESSAGE = 0;
+    private static final int BLUETOOTH_CONNECT_MESSAGE = 1;
+    private static final int BLUETOOTH_NOT_SUPPORT_MESSAGE = 2;
 
     public static final int WRITE_TYPE_DEFAULT = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT;
     public static final int WRITE_TYPE_NO_RESPONSE = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE;
