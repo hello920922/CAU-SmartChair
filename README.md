@@ -28,7 +28,21 @@
       - Disconnect with the connected device
 >
     public void writeMessage(byte[] message)
+    public void writeMessage(byte[] message, int writeType)
       - Send data to the connected device
+      
+> #### The usable variables
+    public static final int WRITE_TYPE_DEFAULT = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT;
+    public static final int WRITE_TYPE_NO_RESPONSE = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE;
+    public static final int WRITE_TYPE_SIGNED = BluetoothGattCharacteristic.WRITE_TYPE_SIGNED;
+      - Write type variables for method 'writeMessage(byte[] message, int writeType)'
+>
+    public static final int STATE_WAITING = 0;
+    public static final int STATE_SCANNING = 1;
+    public static final int STATE_CONNECTING = 2;
+    public static final int STATE_CONNECTED = 3;
+    public static final int STATE_DISCONNECTING = 4;
+      - State variables for knowing current state of android bluetooth
 
 ## BeaconRecord Class
 > ### The class about beacon information.
