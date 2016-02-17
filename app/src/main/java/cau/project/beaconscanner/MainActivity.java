@@ -137,8 +137,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.btn_scan) {
             if(bleConnector.getState() == BLEConnector.STATE_WAITING){
-                btnScan.setText("STOP");
-                bleConnector.startDiscovery();
+                if(bleConnector.startDiscovery()){
+                    btnScan.setText("STOP");
+                }
             }
             else if(bleConnector.getState() == BLEConnector.STATE_CONNECTED || bleConnector.getState() == BLEConnector.STATE_CONNECTING){
                 btnScan.setText("SCAN");
