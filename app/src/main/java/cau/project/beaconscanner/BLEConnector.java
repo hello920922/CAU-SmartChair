@@ -133,6 +133,9 @@ public abstract class BLEConnector extends Handler{
                             Log.d(LOGTAG, "Available characteristic uuid : " + gattCharacteristic.getUuid());
                             return;
                         }
+                        if(isWritableCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"WritableCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
+                        if(isReadableCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"ReadableCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
+                        if(isNotificationCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"NotificationCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
                     }
                 }
             }
@@ -293,12 +296,12 @@ public abstract class BLEConnector extends Handler{
     public abstract void readHandler(byte[] data);
 
     // After check whether the device support bluetooth and bluetooth state, start discovery
-    public void startDiscovery() {
+    public boolean startDiscovery() {
         this.state = STATE_SCANNING;
         if (mBluetoothAdapter == null) {
             Log.e(LOGTAG, "This device does not support bluetooth");
             this.sendEmptyMessage(BLUETOOTH_NOT_SUPPORT_MESSAGE);
-            return;
+            return false;
         }
         if (!mBluetoothAdapter.isEnabled()) {
             Intent btEnIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -306,6 +309,7 @@ public abstract class BLEConnector extends Handler{
                 ((AppCompatActivity)context).startActivityForResult(btEnIntent, REQUEST_ENABLE_BT);
             else
                 context.startActivity(btEnIntent);
+            return false;
         }
         if(!mBluetoothAdapter.isDiscovering()){
             // Check API Level
@@ -317,7 +321,10 @@ public abstract class BLEConnector extends Handler{
                 Log.d(LOGTAG, "This SDK version is less than 5.0");
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
             }
+            return true;
         }
+        else
+            return false;
     }
     public void stopDiscovery(){
         this.state = STATE_WAITING;
