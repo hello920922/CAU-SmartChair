@@ -2,6 +2,7 @@ package cau.project.beaconscanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -108,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             logView.setText(peripheral.toString());
                             btnScan.setText("DISCONNECT");
                             Toast.makeText(bleConnector.getContext(), "Try to connect with " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, ChairActivity.class);
+                            //intent.putExtra("Device", bluetoothDevice);
+                            startActivity(intent);
+
+
                         }
                     });
                     peripheral.getButton().setText(buttonLabel);
