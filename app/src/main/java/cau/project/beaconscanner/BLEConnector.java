@@ -75,98 +75,6 @@ public abstract class BLEConnector extends Handler{
         this.state = STATE_WAITING;
         this.failCount = 0;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
-            mScanCallback = makeScanCallback();
-            mLeScanCallback = null;
-        }
-        else {
-            mBluetoothLeScanner = null;
-            mLeScanCallback = makeLeScanCallback();
-            mScanCallback = null;
-        }
-        mBluetoothGattCallback = new BluetoothGattCallback() {
-            @Override
-            public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-                if (newState == BluetoothProfile.STATE_CONNECTED) {
-                    state = STATE_CONNECTED;
-                    Log.d(LOGTAG, "Connected");
-                    failCount = 0;
-                    gatt.discoverServices();
-                }
-                else if (newState == BluetoothProfile.STATE_DISCONNECTED){
-                    Log.d(LOGTAG, "Disconnected");
-                    if(state == STATE_CONNECTING && failCount < 4) {
-                        Log.d(LOGTAG, "Retry to connect");
-                        failCount ++;
-                        connectDevice(gatt.getDevice());
-                    }else {
-                        failCount = 0;
-                        state = STATE_WAITING;
-                    }
-                }
-                else if (newState == BluetoothProfile.STATE_CONNECTING){
-                    state = STATE_CONNECTING;
-                    Log.d(LOGTAG, "Connecting...");
-                }
-                else if (newState == BluetoothProfile.STATE_DISCONNECTING){
-                    state = STATE_DISCONNECTING;
-                    Log.d(LOGTAG, "Disconnecting...");
-                }
-                else if (newState == BluetoothGatt.GATT_FAILURE){
-                    state = STATE_WAITING;
-                    Log.d(LOGTAG, "Failure");
-                }
-            }
-
-            @Override
-            public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-                List<BluetoothGattService> gattServices = gatt.getServices();
-                for (BluetoothGattService gattService : gattServices) {
-                    List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
-                    for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
-                        if (isWritableCharacteristic(gattCharacteristic) && isReadableCharacteristic(gattCharacteristic) && isNotificationCharacteristic(gattCharacteristic)) {
-                            gatt.setCharacteristicNotification(gattCharacteristic, true);
-                            mDefaultBluetoothGatt = gatt;
-                            mDefaultBluetoothGattCharacteristic = gattCharacteristic;
-                            Log.d(LOGTAG, "Available service uuid : " + gattService.getUuid());
-                            Log.d(LOGTAG, "Available characteristic uuid : " + gattCharacteristic.getUuid());
-                            return;
-                        }
-                        if(isWritableCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"WritableCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
-                        if(isReadableCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"ReadableCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
-                        if(isNotificationCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"NotificationCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
-                    }
-                }
-            }
-
-            @Override
-            public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-                if (status == BluetoothGatt.GATT_SUCCESS)
-                    Log.d(LOGTAG, "Success to read");
-                else if(status == BluetoothGatt.GATT_FAILURE)
-                    Log.d(LOGTAG, "Fail to read");
-            }
-
-            @Override
-            public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-                if (status == BluetoothGatt.GATT_SUCCESS)
-                    Log.d(LOGTAG, "Success to write");
-                else if(status == BluetoothGatt.GATT_FAILURE)
-                    Log.d(LOGTAG, "Fail to write");
-            }
-
-            @Override
-            public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-                byte[] readData = characteristic.getValue();
-                if (readData == null || readData.length <= 0) {
-                    return;
-                }
-                data = readData;
-                Log.d(LOGTAG, "Read message : " + new String(data));
-                sendEmptyMessage(BLUETOOTH_READ_MESSAGE);
-            }
-        };
     }
 
     @Override
@@ -297,7 +205,6 @@ public abstract class BLEConnector extends Handler{
 
     // After check whether the device support bluetooth and bluetooth state, start discovery
     public boolean startDiscovery() {
-        this.state = STATE_SCANNING;
         if (mBluetoothAdapter == null) {
             Log.e(LOGTAG, "This device does not support bluetooth");
             this.sendEmptyMessage(BLUETOOTH_NOT_SUPPORT_MESSAGE);
@@ -312,15 +219,109 @@ public abstract class BLEConnector extends Handler{
             return false;
         }
         if(!mBluetoothAdapter.isDiscovering()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
+                mScanCallback = makeScanCallback();
+                mLeScanCallback = null;
+            }
+            else {
+                mBluetoothLeScanner = null;
+                mLeScanCallback = makeLeScanCallback();
+                mScanCallback = null;
+            }
+            mBluetoothGattCallback = new BluetoothGattCallback() {
+                @Override
+                public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+                    if (newState == BluetoothProfile.STATE_CONNECTED) {
+                        state = STATE_CONNECTED;
+                        Log.d(LOGTAG, "Connected");
+                        failCount = 0;
+                        gatt.discoverServices();
+                    }
+                    else if (newState == BluetoothProfile.STATE_DISCONNECTED){
+                        Log.d(LOGTAG, "Disconnected");
+                        if(state == STATE_CONNECTING && failCount < 4) {
+                            Log.d(LOGTAG, "Retry to connect");
+                            failCount ++;
+                            connectDevice(gatt.getDevice());
+                        }else {
+                            failCount = 0;
+                            state = STATE_WAITING;
+                        }
+                    }
+                    else if (newState == BluetoothProfile.STATE_CONNECTING){
+                        state = STATE_CONNECTING;
+                        Log.d(LOGTAG, "Connecting...");
+                    }
+                    else if (newState == BluetoothProfile.STATE_DISCONNECTING){
+                        state = STATE_DISCONNECTING;
+                        Log.d(LOGTAG, "Disconnecting...");
+                    }
+                    else if (newState == BluetoothGatt.GATT_FAILURE){
+                        state = STATE_WAITING;
+                        Log.d(LOGTAG, "Failure");
+                    }
+                }
+
+                @Override
+                public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+                    List<BluetoothGattService> gattServices = gatt.getServices();
+                    for (BluetoothGattService gattService : gattServices) {
+                        List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
+                        for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                            if (isWritableCharacteristic(gattCharacteristic) && isReadableCharacteristic(gattCharacteristic) && isNotificationCharacteristic(gattCharacteristic)) {
+                                gatt.setCharacteristicNotification(gattCharacteristic, true);
+                                mDefaultBluetoothGatt = gatt;
+                                mDefaultBluetoothGattCharacteristic = gattCharacteristic;
+                                Log.d(LOGTAG, "Available service uuid : " + gattService.getUuid());
+                                Log.d(LOGTAG, "Available characteristic uuid : " + gattCharacteristic.getUuid());
+                                return;
+                            }
+                            if(isWritableCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"WritableCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
+                            if(isReadableCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"ReadableCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
+                            if(isNotificationCharacteristic(gattCharacteristic)){Log.d(LOGTAG,"NotificationCharacteristic : " + gattService.getUuid() + "/" + gattCharacteristic.getUuid());}
+                        }
+                    }
+                }
+
+                @Override
+                public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                    if (status == BluetoothGatt.GATT_SUCCESS)
+                        Log.d(LOGTAG, "Success to read");
+                    else if(status == BluetoothGatt.GATT_FAILURE)
+                        Log.d(LOGTAG, "Fail to read");
+                }
+
+                @Override
+                public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                    if (status == BluetoothGatt.GATT_SUCCESS)
+                        Log.d(LOGTAG, "Success to write");
+                    else if(status == BluetoothGatt.GATT_FAILURE)
+                        Log.d(LOGTAG, "Fail to write");
+                }
+
+                @Override
+                public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                    byte[] readData = characteristic.getValue();
+                    if (readData == null || readData.length <= 0) {
+                        return;
+                    }
+                    data = readData;
+                    Log.d(LOGTAG, "Read message : " + new String(data));
+                    sendEmptyMessage(BLUETOOTH_READ_MESSAGE);
+                }
+            };
             // Check API Level
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 Log.d(LOGTAG, "This SDK version is 5.0 or higher");
                 mBluetoothLeScanner.startScan(mScanCallback);
             }
+
             else{
                 Log.d(LOGTAG, "This SDK version is less than 5.0");
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
             }
+            this.state = STATE_SCANNING;
             return true;
         }
         else
