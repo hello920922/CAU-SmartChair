@@ -2,6 +2,7 @@ package cau.project.beaconscanner;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -31,12 +32,11 @@ import java.util.HashMap;
  */
 public class ChairActivity extends AppCompatActivity {
     private BLEConnector bleConnector;
-    private LinearLayout peripheralList;
-    private TextView logView;
-    private TextView selectedPeripheralView;
-    private String selectedPeripheral;
-    private HashMap<String, Peripheral> peripheralMap;
-    private Button btnScan;
+    private TextView uuid;
+    private TextView major;
+    private TextView minor;
+    private Intent intent;
+
 
     class Peripheral {
         private BluetoothDevice device;
@@ -81,14 +81,13 @@ public class ChairActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chair);
+        intent = getIntent();
+
 
 
         final ChairView m = new ChairView(this);
-
         FrameLayout frameLayout = (FrameLayout)findViewById(R.id.frameLayout);
-
         frameLayout.addView(m);
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 4;
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chair, options);
@@ -96,6 +95,44 @@ public class ChairActivity extends AppCompatActivity {
         ImageView im = (ImageView)findViewById(R.id.imageView);
         im.setImageBitmap(b1);
 
+
+        uuid = (TextView)findViewById(R.id.uuid);
+        major = (TextView)findViewById(R.id.major);
+        minor = (TextView)findViewById(R.id.minor);
+
+
+
+        bleConnector = new BLEConnector(this) {
+            @Override
+            protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
+
+                if(bluetoothDevice.getAddress().equals(intent.getStringExtra("Address"))){
+                    bleConnector.connectDevice(bluetoothDevice);
+                    uuid.setText(record.getUuid().toString());
+                    major.setText(String.valueOf(record.getMajor()));
+                    minor.setText(String.valueOf(record.getMinor()));
+
+
+                }
+                else{
+                    uuid.setText("x");
+                    major.setText("x");
+                    minor.setText("x");
+
+
+                }
+
+            }
+
+            @Override
+            public void readHandler(byte[] data) {
+            }
+        };
+
+
+        bleConnector.startDiscovery();
+
+        
 
 
     }

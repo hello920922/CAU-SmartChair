@@ -26,9 +26,6 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private BLEConnector bleConnector;
     private LinearLayout peripheralList;
-    private TextView logView;
-    private TextView selectedPeripheralView;
-    private String selectedPeripheral;
     private HashMap<String, Peripheral> peripheralMap;
     private Button btnScan;
 
@@ -88,9 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnScan = ((Button)findViewById(R.id.btn_scan));
         btnScan.setOnClickListener(this);
         peripheralList = (LinearLayout)findViewById(R.id.list_peripheral);
-        logView = (TextView)findViewById(R.id.text_log);
-        selectedPeripheralView = (TextView)findViewById(R.id.text_peripheral);
-        selectedPeripheral = null;
         peripheralMap = new HashMap<>();
 
         bleConnector = new BLEConnector(this) {
@@ -103,17 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     peripheral.getButton().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            bleConnector.connectDevice(bluetoothDevice);
-                            selectedPeripheralView.setText(buttonLabel);
-                            selectedPeripheral = bluetoothDevice.getAddress();
-                            logView.setText(peripheral.toString());
-                            btnScan.setText("DISCONNECT");
                             Toast.makeText(bleConnector.getContext(), "Try to connect with " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, ChairActivity.class);
-                            //intent.putExtra("Device", bluetoothDevice);
+                            intent.putExtra("Address", bluetoothDevice.getAddress());
+
                             startActivity(intent);
-
-
                         }
                     });
                     peripheral.getButton().setText(buttonLabel);
@@ -122,8 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     peripheralMap.put(bluetoothDevice.getAddress(), peripheral);
                 }
                 else{
-                    if(selectedPeripheral != null && bluetoothDevice.getAddress().equals(selectedPeripheral))
-                        selectedPeripheralView.setText(buttonLabel);
+
                     Peripheral peripheral = peripheralMap.get(bluetoothDevice.getAddress());
                     peripheral.getButton().setText(buttonLabel);
                     if(bleConnector.getState() != BLEConnector.STATE_CONNECTED)
@@ -133,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void readHandler(byte[] data) {
-                peripheralMap.get(selectedPeripheral).append(makeLog(data));
-                logView.append(makeLog(data));
             }
         };
     }

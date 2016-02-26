@@ -7,46 +7,6 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_weight="5"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="0.3"
-                android:text="Selected Device"
-                android:gravity="center"
-                android:background="#ffffcf"/>
-            <TextView
-                android:id="@+id/text_peripheral"
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="0.7"
-                android:gravity="center"
-                android:background="#ffffcf"/>
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="6">
-                <TextView
-                    android:id="@+id/text_log"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"/>
-            </ScrollView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0sp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
@@ -57,8 +17,8 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"/>
             </ScrollView>
-        </LinearLayout>
-    </LinearLayout>
+
+
 
     <Button
         android:id="@+id/btn_scan"
