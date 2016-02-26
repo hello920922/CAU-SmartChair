@@ -93,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 final String buttonLabel = bluetoothDevice.getName() + "\n" + bluetoothDevice.getAddress() + "\n"
                                         + record.getUuid() + "\n" + "RSSI : " + rssi;
                 if(!peripheralMap.containsKey(bluetoothDevice.getAddress())) {
+                    if(record.getUuid() == null){
+                        return;
+                    }
                     final Peripheral peripheral = new Peripheral(bluetoothDevice, this.getContext(), new File(dir, record.getUuid()));
                     peripheral.getButton().setOnClickListener(new View.OnClickListener() {
                         @Override

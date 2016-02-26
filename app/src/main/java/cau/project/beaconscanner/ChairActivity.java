@@ -36,46 +36,11 @@ public class ChairActivity extends AppCompatActivity {
     private TextView major;
     private TextView minor;
     private Intent intent;
+    private StringBuilder log = new StringBuilder();
 
 
-    class Peripheral {
-        private BluetoothDevice device;
-        private Button button;
-        private StringBuilder log;
-        private FileWriter writer;
 
-        public Peripheral(BluetoothDevice device, Context context, File filePath){
-            this.device = device;
-            button = new Button(context);
-            log = new StringBuilder();
-            try {
-                writer = new FileWriter(filePath, true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        public Button getButton(){
-            return button;
-        }
-        public void append(String log){
-            this.log.append(log);
-            if(writer != null){
-                try {
-                    writer.write(log);
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        @Override
-        public String toString(){
-            return log.toString();
-        }
-        public BluetoothDevice getDevice(){
-            return device;
-        }
-    }
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,32 +65,46 @@ public class ChairActivity extends AppCompatActivity {
         major = (TextView)findViewById(R.id.major);
         minor = (TextView)findViewById(R.id.minor);
 
+        final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
+        Log.d("FILE", dir.getAbsolutePath());
+        if(!dir.exists())
+            try {
+                dir.mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
         bleConnector = new BLEConnector(this) {
             @Override
             protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
 
+
+                if(bluetoothDevice.getAddress() == null){
+                    return;
+                }
+
+                if(record.getUuid() == null){
+                    return;
+                }
+
                 if(bluetoothDevice.getAddress().equals(intent.getStringExtra("Address"))){
-                    bleConnector.connectDevice(bluetoothDevice);
-                    uuid.setText(record.getUuid().toString());
-                    major.setText(String.valueOf(record.getMajor()));
-                    minor.setText(String.valueOf(record.getMinor()));
 
-
-                }
-                else{
-                    uuid.setText("x");
-                    major.setText("x");
-                    minor.setText("x");
-
+                    //bleConnector.connectDevice(bluetoothDevice);
+                    uuid.setText("UUID  : " + record.getUuid().toString());
+                    major.setText("Major : " + String.valueOf(record.getMajor()));
+                    minor.setText("Minor : " + String.valueOf(record.getMinor()));
+                    log.append(makeLog(record.getMinor()));
+                    Toast.makeText(getApplicationContext(), log.toString(),Toast.LENGTH_LONG).show();
 
                 }
+
 
             }
 
             @Override
             public void readHandler(byte[] data) {
+
             }
         };
 
@@ -135,6 +114,17 @@ public class ChairActivity extends AppCompatActivity {
         
 
 
+    }
+
+
+    public void onLogButtonClicked(View v){
+        Intent newIntent = new Intent(ChairActivity.this, LogActivity.class);
+
+        newIntent.putExtra("Log", log.toString());
+        newIntent.putExtra("Address", intent.getStringExtra("Address"));
+        startActivity(newIntent);
+
+        bleConnector.stopDiscovery();
     }
 
 

@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChairActivity" android:label="ChairActivity"></activity>
+        <activity android:name=".LogActivity" android:label="LogActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
