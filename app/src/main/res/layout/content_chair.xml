@@ -13,23 +13,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/uuid"
-        android:text="UUID : "
+        android:id="@+id/data"
+        android:text="Data : "
         android:background="#FFFFFF9F"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/major"
-        android:text="Major : "
-        android:background="#FFFFFF9F"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/minor"
-        android:text="Minor : "
-        android:background="#FFFFFF9F"/>
 
 
 
@@ -85,8 +73,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/PLF"
-                android:text="PLF : 0"
+                android:id="@+id/PRF"
+                android:text="PRF : 0"
                 android:layout_weight="1"
                 android:layout_marginLeft="100dp"
                 />
@@ -94,8 +82,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/PRF"
-                android:text="PRF : 0"
+                android:id="@+id/PLF"
+                android:text="PLF : 0"
                 android:layout_weight="1"
                 android:layout_marginLeft="50dp"
                 />
@@ -117,17 +105,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/PLB"
+                android:id="@+id/PRB"
                 android:layout_weight="1"
-                android:text="PLB : 0"
+                android:text="PRB : 0"
                 android:layout_marginLeft="100dp"
                 />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/PRB"
-                android:text="PRB : 0"
+                android:id="@+id/PLB"
+                android:text="PLB : 0"
                 android:layout_weight="1"
                 android:layout_marginLeft="50dp"
                 />

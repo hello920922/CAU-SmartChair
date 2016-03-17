@@ -104,9 +104,7 @@ public class LogActivity extends AppCompatActivity {
 
         bleConnector = new BLEConnector(this) {
             @Override
-            protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
-
-
+            protected void discoveryAvailableDevice(BluetoothDevice bluetoothDevice, int rssi, BeaconRecord record) {
                 if(bluetoothDevice.getAddress() == null){
                     return;
                 }
@@ -116,26 +114,21 @@ public class LogActivity extends AppCompatActivity {
                 }
 
                 if(bluetoothDevice.getAddress().equals(intent.getStringExtra("Address"))){
-
-                    //bleConnector.connectDevice(bluetoothDevice);
-
-                    peripheral.append(makeLog(record.getMinor()));
-                    logView.setText(peripheral.toString());
+                    bleConnector.stopDiscovery();
+                    bleConnector.connectDevice(bluetoothDevice);
+                    Toast.makeText(getApplicationContext(), "Connected!",Toast.LENGTH_LONG).show();
 
                 }
-
-
             }
 
             @Override
             public void readHandler(byte[] data) {
-
+                peripheral.append(makeLog(data));
+                logView.setText(peripheral.toString());
             }
         };
 
-
         bleConnector.startDiscovery();
-
 
 
 
@@ -168,6 +161,17 @@ public class LogActivity extends AppCompatActivity {
 
         return builder.toString();
     };
+    public String makeLog(byte[] data){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuilder builder = new StringBuilder();
+        builder.append(format.format(new Date()));
+        builder.append(" >> ");
+        builder.append(new String(data));
+        builder.append("\n");
+
+        return builder.toString();
+    };
+
 
 
 }

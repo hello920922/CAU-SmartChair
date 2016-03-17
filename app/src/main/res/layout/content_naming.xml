@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".NamingActivity"
+    tools:showIn="@layout/activity_naming"
+    android:background="@mipmap/chairs"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="236dp"
+        android:background="#BBFFFFFF"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAC :"
+            android:textSize="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/macAddress"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name : "
+            android:textSize="25dp"
+            android:layout_below="@+id/macAddress"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/nameTag"
+             />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:layout_toRightOf="@+id/nameTag"
+            android:layout_alignBottom="@+id/nameTag"
+            android:layout_marginRight="60dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="60dp"
+            android:id="@+id/enroll"
+            android:text="등록"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            android:text="취소"
+            android:layout_alignTop="@+id/enroll"
+            android:layout_toEndOf="@+id/enroll"
+            android:layout_marginStart="73dp" />
+
+    </RelativeLayout>
+
+
+</FrameLayout>

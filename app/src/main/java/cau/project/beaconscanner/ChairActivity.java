@@ -31,12 +31,46 @@ import java.util.HashMap;
  * Created by Jaewon Lee on 2016-02-18.
  */
 public class ChairActivity extends AppCompatActivity {
-    private BLEConnector bleConnector;
-    private TextView uuid;
-    private TextView major;
-    private TextView minor;
+
+
+    private TextView dataField;
     private Intent intent;
     private StringBuilder log = new StringBuilder();
+
+    private BLEConnector bleConnector = new BLEConnector(this) {
+        @Override
+        protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BLEConnector.BeaconRecord record) {
+
+
+            if(bluetoothDevice.getAddress() == null){
+                return;
+            }
+
+            if(record.getUuid() == null){
+                return;
+            }
+
+            if(bluetoothDevice.getAddress().equals(intent.getStringExtra("Address"))){
+                bleConnector.connectDevice(bluetoothDevice);
+                Toast.makeText(getApplicationContext(), "Connected!",Toast.LENGTH_LONG).show();
+
+            }
+
+
+        }
+
+        @Override
+        public void readHandler(byte[] data) {
+
+
+            dataField.setText("Data  : " + data);
+            log.append(makeLog(data));
+            Toast.makeText(getApplicationContext(), log.toString(), Toast.LENGTH_LONG).show();
+
+
+
+        }
+    };
 
 
 
@@ -61,9 +95,8 @@ public class ChairActivity extends AppCompatActivity {
         im.setImageBitmap(b1);
 
 
-        uuid = (TextView)findViewById(R.id.uuid);
-        major = (TextView)findViewById(R.id.major);
-        minor = (TextView)findViewById(R.id.minor);
+        dataField = (TextView)findViewById(R.id.data);
+
 
         final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
         Log.d("FILE", dir.getAbsolutePath());
@@ -75,38 +108,6 @@ public class ChairActivity extends AppCompatActivity {
             }
 
 
-        bleConnector = new BLEConnector(this) {
-            @Override
-            protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
-
-
-                if(bluetoothDevice.getAddress() == null){
-                    return;
-                }
-
-                if(record.getUuid() == null){
-                    return;
-                }
-
-                if(bluetoothDevice.getAddress().equals(intent.getStringExtra("Address"))){
-
-                    //bleConnector.connectDevice(bluetoothDevice);
-                    uuid.setText("UUID  : " + record.getUuid().toString());
-                    major.setText("Major : " + String.valueOf(record.getMajor()));
-                    minor.setText("Minor : " + String.valueOf(record.getMinor()));
-                    log.append(makeLog(record.getMinor()));
-                    Toast.makeText(getApplicationContext(), log.toString(),Toast.LENGTH_LONG).show();
-
-                }
-
-
-            }
-
-            @Override
-            public void readHandler(byte[] data) {
-
-            }
-        };
 
 
         bleConnector.startDiscovery();
@@ -116,15 +117,16 @@ public class ChairActivity extends AppCompatActivity {
 
     }
 
-
     public void onLogButtonClicked(View v){
         Intent newIntent = new Intent(ChairActivity.this, LogActivity.class);
 
         newIntent.putExtra("Log", log.toString());
         newIntent.putExtra("Address", intent.getStringExtra("Address"));
+        bleConnector.disconnect();
+        bleConnector.stopDiscovery();
         startActivity(newIntent);
 
-        bleConnector.stopDiscovery();
+
     }
 
 
@@ -138,16 +140,7 @@ public class ChairActivity extends AppCompatActivity {
 
         return builder.toString();
     };
-    public String makeLog(int data){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        StringBuilder builder = new StringBuilder();
-        builder.append(format.format(new Date()));
-        builder.append(" >> ");
-        builder.append(String.valueOf(data));
-        builder.append("\n");
 
-        return builder.toString();
-    };
 
     class Center{
         private float x;
@@ -215,16 +208,14 @@ public class ChairActivity extends AppCompatActivity {
         private String code = "-1";
         Paint paint = new Paint();
 
-        float pOvalWidth = 100f;
-        float pOvalHeight = 50f;
-        float tOvalWidth = 200f;
-        float tOvalHeight = 60f;
-        Oval PRB = new Oval(new Center(540f,1060f), pOvalWidth, pOvalHeight);
-        Oval PRF = new Oval(new Center(500f,1270f), pOvalWidth, pOvalHeight);
-        Oval PLB = new Oval(new Center(945f,1050f), pOvalWidth, pOvalHeight);
-        Oval PLF = new Oval(new Center(995f,1270f), pOvalWidth, pOvalHeight);
-        Oval LT = new Oval(new Center(1040f,1420f), tOvalWidth, tOvalHeight);
-        Oval RT = new Oval(new Center(480f, 1420f), tOvalWidth, tOvalHeight);
+        float pOvalWidth = 50f;
+        float pOvalHeight = 20f;
+
+        Oval PRB = new Oval(new Center(530f,1000f), pOvalWidth, pOvalHeight);
+        Oval PRF = new Oval(new Center(500f,1075f), pOvalWidth, pOvalHeight);
+        Oval PLB = new Oval(new Center(935f,1000f), pOvalWidth, pOvalHeight);
+        Oval PLF = new Oval(new Center(985f,1075f), pOvalWidth, pOvalHeight);
+
 
 
 
@@ -256,14 +247,8 @@ public class ChairActivity extends AppCompatActivity {
                     canvas.drawOval(PLB.getCenter().getX()-PLB.getWidth(), PLB.getCenter().getY()-PLB.getHeight(), PLB.getCenter().getX()+PLB.getWidth(), PLB.getCenter().getY()+PLB.getHeight(), paint);   //PLB
                     canvas.drawOval(PLF.getCenter().getX()-PLF.getWidth(), PLF.getCenter().getY()-PLF.getHeight(), PLF.getCenter().getX()+PLF.getWidth(), PLF.getCenter().getY()+PLF.getHeight(), paint); //PLF
 
-                    paint.setColor(Color.BLUE);
 
-                    //canvas.rotate(15,RT.getCenter().getX(), RT.getCenter().getY());
-                    canvas.drawOval(RT.getCenter().getX() - RT.getWidth(), RT.getCenter().getY() - RT.getHeight(), RT.getCenter().getX() + RT.getWidth(), RT.getCenter().getY() + RT.getHeight(), paint);
-                    //canvas.restore();
-                    //canvas.rotate(-15,LT.getCenter().getX(), LT.getCenter().getY());
-                    canvas.drawOval(LT.getCenter().getX() - LT.getWidth(), LT.getCenter().getY() - LT.getHeight(), LT.getCenter().getX() + LT.getWidth(), LT.getCenter().getY() + LT.getHeight(), paint);
-                    //canvas.restore();
+
                     break;
 
 

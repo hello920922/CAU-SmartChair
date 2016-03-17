@@ -20,9 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-/**
- * Created by Mingyu Park on 2016-01-11.
- */
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private BLEConnector bleConnector;
     private LinearLayout peripheralList;
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
                 final String buttonLabel = bluetoothDevice.getName() + "\n" + bluetoothDevice.getAddress() + "\n"
-                                        + record.getUuid() + "\n" + "RSSI : " + rssi;
+                                        + record.getUuid() + "\n" + "Major : " + record.getMajor() + "\n" +"Minor : " + record.getMinor() + "\n" + "RSSI : " + rssi;
                 if(!peripheralMap.containsKey(bluetoothDevice.getAddress())) {
                     if(record.getUuid() == null){
                         return;
@@ -103,12 +101,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(bleConnector.getContext(), "Try to connect with " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, ChairActivity.class);
                             intent.putExtra("Address", bluetoothDevice.getAddress());
-
                             startActivity(intent);
                         }
                     });
                     peripheral.getButton().setText(buttonLabel);
-                    peripheral.append(makeLog(record.getMinor()));
                     peripheralList.addView(peripheral.getButton());
                     peripheralMap.put(bluetoothDevice.getAddress(), peripheral);
                 }
@@ -116,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     Peripheral peripheral = peripheralMap.get(bluetoothDevice.getAddress());
                     peripheral.getButton().setText(buttonLabel);
-                    if(bleConnector.getState() != BLEConnector.STATE_CONNECTED)
-                        peripheral.append(makeLog(record.getMinor()));
+
                 }
             }
 
@@ -146,24 +141,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public String makeLog(byte[] data){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        StringBuilder builder = new StringBuilder();
-        builder.append(format.format(new Date()));
-        builder.append(" >> ");
-        builder.append(new String(data));
-        builder.append("\n");
 
-        return builder.toString();
-    };
-    public String makeLog(int data){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        StringBuilder builder = new StringBuilder();
-        builder.append(format.format(new Date()));
-        builder.append(" >> ");
-        builder.append(String.valueOf(data));
-        builder.append("\n");
-
-        return builder.toString();
-    };
 }
