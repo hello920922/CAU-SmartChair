@@ -133,6 +133,8 @@ public class ChairActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        log.delete(0,log.length());
+        log.append(data.getAction());
         bleConnector.startDiscovery();
     }
 

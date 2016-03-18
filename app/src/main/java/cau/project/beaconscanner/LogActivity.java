@@ -38,6 +38,7 @@ public class LogActivity extends AppCompatActivity {
     BLEConnector bleConnector;
     Button saveButton;
     ScrollView logScroll;
+    Peripheral peripheral;
 
     class Peripheral {
 
@@ -99,7 +100,7 @@ public class LogActivity extends AppCompatActivity {
             }
 
 
-        final Peripheral peripheral = new Peripheral(new File(dir, "Chair.txt"));
+        peripheral = new Peripheral(new File(dir, "Chair.txt"));
 
         logView = (TextView) findViewById(R.id.log);
         saveButton = (Button) findViewById(R.id.Save);
@@ -157,6 +158,7 @@ public class LogActivity extends AppCompatActivity {
             case KeyEvent.KEYCODE_BACK:
                 bleConnector.startDiscovery();
                 bleConnector.disconnect();
+                setResult(RESULT_OK, (new Intent()).setAction(peripheral.toString()));
                 finish();
                 break;
 
@@ -183,6 +185,7 @@ public class LogActivity extends AppCompatActivity {
     public void onBackButtonClicked(View v){
         bleConnector.stopDiscovery();
         bleConnector.disconnect();
+        setResult(RESULT_OK, (new Intent()).setAction(peripheral.toString()));
         finish();
     }
 
