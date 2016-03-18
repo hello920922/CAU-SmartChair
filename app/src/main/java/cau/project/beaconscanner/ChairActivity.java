@@ -64,7 +64,7 @@ public class ChairActivity extends AppCompatActivity {
         public void readHandler(byte[] data) {
 
 
-            dataField.setText("Data  : " + data);
+            dataField.setText("Data  : " + new String(data));
             log.append(makeLog(data));
 
 
