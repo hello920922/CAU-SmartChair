@@ -24,12 +24,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/Save"
         android:text = "Back"
-        android:onClick="onBackButtonClicked"/>
+        android:onClick="onBackButtonClicked"
+        android:id="@+id/back" />
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/back"
+        android:id="@+id/logScroll">
 
         <TextView
             android:layout_width="match_parent"

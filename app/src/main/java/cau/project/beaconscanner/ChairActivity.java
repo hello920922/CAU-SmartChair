@@ -36,6 +36,7 @@ public class ChairActivity extends AppCompatActivity {
     private TextView dataField;
     private Intent intent;
     private StringBuilder log = new StringBuilder();
+    private int REQUEST_CHAIR = 1001;
 
     private BLEConnector bleConnector = new BLEConnector(this) {
         @Override
@@ -65,7 +66,7 @@ public class ChairActivity extends AppCompatActivity {
 
             dataField.setText("Data  : " + data);
             log.append(makeLog(data));
-            Toast.makeText(getApplicationContext(), log.toString(), Toast.LENGTH_LONG).show();
+
 
 
 
@@ -124,11 +125,16 @@ public class ChairActivity extends AppCompatActivity {
         newIntent.putExtra("Address", intent.getStringExtra("Address"));
         bleConnector.disconnect();
         bleConnector.stopDiscovery();
-        startActivity(newIntent);
+        startActivityForResult(newIntent, REQUEST_CHAIR);
+
+
 
 
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        bleConnector.startDiscovery();
+    }
 
     public String makeLog(byte[] data){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -245,7 +251,7 @@ public class ChairActivity extends AppCompatActivity {
                     canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY() + PRB.getHeight(), paint); //PRB
                     canvas.drawOval(PRF.getCenter().getX()-PRF.getWidth(), PRF.getCenter().getY()-PRF.getHeight(), PRF.getCenter().getX()+PRF.getWidth(), PRF.getCenter().getY()+PRF.getHeight(), paint);    //PRF
                     canvas.drawOval(PLB.getCenter().getX()-PLB.getWidth(), PLB.getCenter().getY()-PLB.getHeight(), PLB.getCenter().getX()+PLB.getWidth(), PLB.getCenter().getY()+PLB.getHeight(), paint);   //PLB
-                    canvas.drawOval(PLF.getCenter().getX()-PLF.getWidth(), PLF.getCenter().getY()-PLF.getHeight(), PLF.getCenter().getX()+PLF.getWidth(), PLF.getCenter().getY()+PLF.getHeight(), paint); //PLF
+                    canvas.drawOval(PLF.getCenter().getX() - PLF.getWidth(), PLF.getCenter().getY() - PLF.getHeight(), PLF.getCenter().getX() + PLF.getWidth(), PLF.getCenter().getY()+PLF.getHeight(), paint); //PLF
 
 
 

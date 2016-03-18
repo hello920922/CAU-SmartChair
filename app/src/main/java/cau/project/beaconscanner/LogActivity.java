@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class LogActivity extends AppCompatActivity {
     Boolean admitToSave = false;
     BLEConnector bleConnector;
     Button saveButton;
+    ScrollView logScroll;
 
     class Peripheral {
 
@@ -77,6 +80,9 @@ public class LogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
+
+
+        logScroll = (ScrollView) findViewById(R.id.logScroll);
 
 
         intent = getIntent();
@@ -125,6 +131,15 @@ public class LogActivity extends AppCompatActivity {
             public void readHandler(byte[] data) {
                 peripheral.append(makeLog(data));
                 logView.setText(peripheral.toString());
+
+
+                logScroll.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        logScroll.fullScroll(logScroll.FOCUS_DOWN);
+                    }
+                });
+
             }
         };
 
@@ -134,6 +149,25 @@ public class LogActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        switch(keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                bleConnector.startDiscovery();
+                bleConnector.disconnect();
+                finish();
+                break;
+
+            default:
+                return false;
+
+        }
+
+        return false;
+    }
+
 
 
     public void onSaveButtonClicked(View v){
@@ -148,6 +182,7 @@ public class LogActivity extends AppCompatActivity {
     }
     public void onBackButtonClicked(View v){
         bleConnector.stopDiscovery();
+        bleConnector.disconnect();
         finish();
     }
 
