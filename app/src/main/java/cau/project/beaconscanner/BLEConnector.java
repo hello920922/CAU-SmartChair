@@ -64,13 +64,15 @@ public abstract class BLEConnector extends Handler{
     private BluetoothGattCallback mBluetoothGattCallback;
     private BluetoothGatt mDefaultBluetoothGatt;
     private BluetoothGattCharacteristic mDefaultBluetoothGattCharacteristic;
+    private ReadInterface readInterface;
 
     // variable to send or receive
     private byte[] data;
 
     // Initialize variables to processing
-    public BLEConnector(Context context) {
+    public BLEConnector(Context context, ReadInterface readInterface) {
         this.context = context;
+        this.readInterface = readInterface;
 
         this.state = STATE_WAITING;
         this.failCount = 0;
@@ -82,7 +84,7 @@ public abstract class BLEConnector extends Handler{
         super.handleMessage(msg);
         switch (msg.what){
             case BLUETOOTH_READ_MESSAGE :
-                readHandler(data);
+                readInterface.read(byte[] data);
                 break;
             case BLUETOOTH_WRITE_MESSAGE :
                 writeHandler((byte[])msg.obj, msg.arg1);
@@ -201,7 +203,9 @@ public abstract class BLEConnector extends Handler{
 
     // API users should implement this method
     protected abstract void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, int rssi, BeaconRecord record);
-    public abstract void readHandler(byte[] data);
+    public void setReadInterface(ReadInterface readInterface){
+        this.readInterface = readInterface;
+    }
 
     // After check whether the device support bluetooth and bluetooth state, start discovery
     public boolean startDiscovery() {
