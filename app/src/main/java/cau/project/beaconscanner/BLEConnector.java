@@ -84,7 +84,7 @@ public abstract class BLEConnector extends Handler{
         super.handleMessage(msg);
         switch (msg.what){
             case BLUETOOTH_READ_MESSAGE :
-                readInterface.read(byte[] data);
+                readInterface.read(data);
                 break;
             case BLUETOOTH_WRITE_MESSAGE :
                 writeHandler((byte[])msg.obj, msg.arg1);
