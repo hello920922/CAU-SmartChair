@@ -28,42 +28,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnScan;
 
     class Peripheral {
-        private BluetoothDevice device;
         private Button button;
-        private StringBuilder log;
-        private FileWriter writer;
 
-        public Peripheral(BluetoothDevice device, Context context, File filePath){
-            this.device = device;
+        public Peripheral(Context context){
             button = new Button(context);
-            log = new StringBuilder();
-            try {
-                writer = new FileWriter(filePath, true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         public Button getButton(){
             return button;
         }
-        public void append(String log){
-            this.log.append(log);
-            if(writer != null){
-                try {
-                    writer.write(log);
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        @Override
-        public String toString(){
-            return log.toString();
-        }
-        public BluetoothDevice getDevice(){
-            return device;
-        }
+
     }
 
 	@Override
@@ -85,7 +58,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         peripheralList = (LinearLayout)findViewById(R.id.list_peripheral);
         peripheralMap = new HashMap<>();
 
-        bleConnector = new BLEConnector(this) {
+        bleConnector = new BLEConnector(this, new ReadInterface() {
+            @Override
+            public void read(byte[] data) {
+
+            }
+        }) {
             @Override
             protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
                 final String buttonLabel = bluetoothDevice.getName() + "\n" + bluetoothDevice.getAddress() + "\n"
@@ -94,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(record.getUuid() == null){
                         return;
                     }
-                    final Peripheral peripheral = new Peripheral(bluetoothDevice, this.getContext(), new File(dir, record.getUuid()));
+                    final Peripheral peripheral = new Peripheral(this.getContext());
                     peripheral.getButton().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -116,9 +94,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
-            @Override
-            public void readHandler(byte[] data) {
-            }
         };
     }
 
