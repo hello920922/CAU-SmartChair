@@ -32,13 +32,230 @@ import java.util.HashMap;
  */
 public class ChairActivity extends AppCompatActivity {
 
+    BitmapFactory.Options options;
+    Bitmap bitmap;
+    Bitmap b1;
+    ImageView im;
 
     private TextView dataField;
+    private TextView PRBField;
+    private TextView PLBField;
+    private TextView PRFField;
+    private TextView PLFField;
+    private TextView RTiltField;
+    private TextView LTiltField;
     private Intent intent;
     private StringBuilder log = new StringBuilder();
     private int REQUEST_CHAIR = 1001;
+    private int value = -1;
+    private int LValue = -1 ,RValue = -1;
+    private int PRB = -1 , PLB = -1 , PRF = -1 , PLF = -1 , RTilt = -1 , LTilt = -1;
+    private String sData;
+    private ChairView m;
 
-    private BLEConnector bleConnector = new BLEConnector(this) {
+
+    private BLEConnector bleConnector = new BLEConnector(this, new ReadInterface() {
+        @Override
+        public void read(byte[] data) {
+            dataField.setText("Data  : " + new String(data));
+            log.append(makeLog(data));
+            sData = new String(data);
+            if(!sData.contains("?")){
+                value = Integer.parseInt(sData);
+                LValue = value >> 8;
+                RValue = value & 0x00FF;
+                PLF = (LValue >> 4) & 0x0003;
+                PLB = (LValue >> 2) & 0x0003;
+                LTilt = (LValue) & 0x0003;
+                PRF = (RValue >> 4) & 0x0003;
+                PRB = (RValue >> 2) & 0x0003;
+                RTilt = (RValue) & 0x0003;
+
+                Log.d("Cencor", "PLF : " + PLF + ", PLB : " + PLB + ", LTilt : " + LTilt + ", PRF : " + PRF + ", PRB : " + PRB + ", RTilt : " + RTilt);
+                m.setCode(PLF, PLB, PRF, PRB);
+
+                PLFField.setText("PRB : " + PRB);
+                PLBField.setText("PLB : " + PLB);
+                LTiltField.setText("LTilt : " + LTilt);
+                PRFField.setText("PRF : " + PRF);
+                PRBField.setText("PRB : " + PRB);
+                RTiltField.setText("RTilt: " + RTilt);
+
+
+                switch(RTilt){
+                    case 0:
+                        switch(LTilt){
+                            case 0:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 1:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 2:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 3:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+
+                        }
+                        break;
+
+
+                    case 1:
+                        switch(RTilt){
+                            case 0:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 1:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 2:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 3:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+
+                        }
+                        break;
+
+
+
+                    case 2:
+                        switch(RTilt){
+                            case 0:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 1:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 2:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 3:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+
+                        }
+                        break;
+
+
+                    case 3:
+                        switch(RTilt){
+                            case 0:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 1:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 2:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+                            case 3:
+                                options = new BitmapFactory.Options();
+                                options.inSampleSize = 4;
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                                im = (ImageView)findViewById(R.id.imageView);
+                                im.setImageBitmap(b1);
+                                break;
+
+                        }
+                        break;
+
+                }
+
+
+
+
+
+                m.invalidate();
+
+
+            }
+            else{
+                Log.d("Cencor",sData);
+            }
+
+
+        }
+    }) {
         @Override
         protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BLEConnector.BeaconRecord record) {
 
@@ -60,17 +277,6 @@ public class ChairActivity extends AppCompatActivity {
 
         }
 
-        @Override
-        public void readHandler(byte[] data) {
-
-
-            dataField.setText("Data  : " + new String(data));
-            log.append(makeLog(data));
-
-
-
-
-        }
     };
 
 
@@ -85,18 +291,30 @@ public class ChairActivity extends AppCompatActivity {
 
 
 
-        final ChairView m = new ChairView(this);
+        m = new ChairView(this);
+
         FrameLayout frameLayout = (FrameLayout)findViewById(R.id.frameLayout);
         frameLayout.addView(m);
-        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        options = new BitmapFactory.Options();
         options.inSampleSize = 4;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chair, options);
-        Bitmap b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        ImageView im = (ImageView)findViewById(R.id.imageView);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chair, options);
+        b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        im = (ImageView)findViewById(R.id.imageView);
         im.setImageBitmap(b1);
 
 
+
+
         dataField = (TextView)findViewById(R.id.data);
+        PRBField = (TextView)findViewById(R.id.PRB);
+        PRFField = (TextView)findViewById(R.id.PRF);
+        RTiltField = (TextView)findViewById(R.id.RTilt);
+        PLBField = (TextView)findViewById(R.id.PLB);
+        PLFField = (TextView)findViewById(R.id.PLF);
+        LTiltField = (TextView)findViewById(R.id.LTilt);
+
+
 
 
         final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
@@ -212,8 +430,8 @@ public class ChairActivity extends AppCompatActivity {
         }
     }
 
+
     class ChairView extends View{
-        private String code = "-1";
         Paint paint = new Paint();
 
         float pOvalWidth = 50f;
@@ -223,9 +441,10 @@ public class ChairActivity extends AppCompatActivity {
         Oval PRF = new Oval(new Center(500f,1075f), pOvalWidth, pOvalHeight);
         Oval PLB = new Oval(new Center(935f,1000f), pOvalWidth, pOvalHeight);
         Oval PLF = new Oval(new Center(985f,1075f), pOvalWidth, pOvalHeight);
-
-
-
+        int code_PRB;
+        int code_PRF;
+        int code_PLB;
+        int code_PLF;
 
 
         public ChairView(Context context){
@@ -237,38 +456,117 @@ public class ChairActivity extends AppCompatActivity {
 
         }
 
-        public void setCode(String str){
-            code = str;
+        public void setCode(int PLF, int PLB, int PRF, int PRB){
+            code_PLF = PLF;
+            code_PLB = PLB;
+            code_PRF = PRF;
+            code_PRB = PRB;
 
         }
         @Override
         protected void onDraw(Canvas canvas){
 
 
-            switch(code){
-                case "-1":
-                    paint.setColor(Color.RED);
 
-
-                    canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY() + PRB.getHeight(), paint); //PRB
-                    canvas.drawOval(PRF.getCenter().getX()-PRF.getWidth(), PRF.getCenter().getY()-PRF.getHeight(), PRF.getCenter().getX()+PRF.getWidth(), PRF.getCenter().getY()+PRF.getHeight(), paint);    //PRF
-                    canvas.drawOval(PLB.getCenter().getX()-PLB.getWidth(), PLB.getCenter().getY()-PLB.getHeight(), PLB.getCenter().getX()+PLB.getWidth(), PLB.getCenter().getY()+PLB.getHeight(), paint);   //PLB
-                    canvas.drawOval(PLF.getCenter().getX() - PLF.getWidth(), PLF.getCenter().getY() - PLF.getHeight(), PLF.getCenter().getX() + PLF.getWidth(), PLF.getCenter().getY()+PLF.getHeight(), paint); //PLF
-
-
+            switch(code_PLF){
+                case 0:
+                    paint.setColor(Color.GREEN);
+                    canvas.drawOval(PLF.getCenter().getX() - PLF.getWidth(), PLF.getCenter().getY() - PLF.getHeight(), PLF.getCenter().getX() + PLF.getWidth(), PLF.getCenter().getY() + PLF.getHeight(), paint); //PLF
 
                     break;
+                case 1:
+                    paint.setColor(Color.YELLOW);
+                    canvas.drawOval(PLF.getCenter().getX() - PLF.getWidth(), PLF.getCenter().getY() - PLF.getHeight(), PLF.getCenter().getX() + PLF.getWidth(), PLF.getCenter().getY() + PLF.getHeight(), paint); //PLF
 
+                    break;
+                case 2:
+                    paint.setColor(Color.argb(255,255,127,0));
+                    canvas.drawOval(PLF.getCenter().getX() - PLF.getWidth(), PLF.getCenter().getY() - PLF.getHeight(), PLF.getCenter().getX() + PLF.getWidth(), PLF.getCenter().getY() + PLF.getHeight(), paint); //PLF
 
-                default:
+                    break;
+                case 3:
                     paint.setColor(Color.RED);
+                    canvas.drawOval(PLF.getCenter().getX() - PLF.getWidth(), PLF.getCenter().getY() - PLF.getHeight(), PLF.getCenter().getX() + PLF.getWidth(), PLF.getCenter().getY()+PLF.getHeight(), paint); //PLF
 
-                    canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY() + PRB.getHeight(), paint); //PRB
-                    canvas.drawOval(PRF.getCenter().getX()-PRF.getWidth(), PRF.getCenter().getY()-PRF.getHeight(), PRF.getCenter().getX()+PRF.getWidth(), PRF.getCenter().getY()+PRF.getHeight(), paint);    //PRF
-                    canvas.drawOval(PLB.getCenter().getX()-PLB.getWidth(), PLB.getCenter().getY()-PLB.getHeight(), PLB.getCenter().getX()+PLB.getWidth(), PLB.getCenter().getY()+PLB.getHeight(), paint);   //PLB
-                    canvas.drawOval(PLF.getCenter().getX()-PLF.getWidth(), PLF.getCenter().getY()-PLF.getHeight(), PLF.getCenter().getX()+PLF.getWidth(), PLF.getCenter().getY()+PLF.getHeight(), paint); //PLF
-
+                    break;
             }
+
+            switch(code_PLB){
+                case 0:
+                    paint.setColor(Color.GREEN);
+                    canvas.drawOval(PLB.getCenter().getX() - PLB.getWidth(), PLB.getCenter().getY() - PLB.getHeight(), PLB.getCenter().getX() + PLB.getWidth(), PLB.getCenter().getY() + PLB.getHeight(), paint); //PLB
+
+                    break;
+                case 1:
+                    paint.setColor(Color.YELLOW);
+                    canvas.drawOval(PLB.getCenter().getX() - PLB.getWidth(), PLB.getCenter().getY() - PLB.getHeight(), PLB.getCenter().getX() + PLB.getWidth(), PLB.getCenter().getY() + PLB.getHeight(), paint); //PLB
+
+                    break;
+                case 2:
+                    paint.setColor(Color.argb(255,255,127,0));
+                    canvas.drawOval(PLB.getCenter().getX() - PLB.getWidth(), PLB.getCenter().getY() - PLB.getHeight(), PLB.getCenter().getX() + PLB.getWidth(), PLB.getCenter().getY() + PLB.getHeight(), paint); //PLB
+
+                    break;
+                case 3:
+                    paint.setColor(Color.RED);
+                    canvas.drawOval(PLB.getCenter().getX() - PLB.getWidth(), PLB.getCenter().getY() - PLB.getHeight(), PLB.getCenter().getX() + PLB.getWidth(), PLB.getCenter().getY()+PLB.getHeight(), paint); //PLB
+
+                    break;
+            }
+
+            switch(code_PRF){
+                case 0:
+                    paint.setColor(Color.GREEN);
+                    canvas.drawOval(PRF.getCenter().getX() - PRF.getWidth(), PRF.getCenter().getY() - PRF.getHeight(), PRF.getCenter().getX() + PRF.getWidth(), PRF.getCenter().getY() + PRF.getHeight(), paint); //PRF
+
+                    break;
+                case 1:
+                    paint.setColor(Color.YELLOW);
+                    canvas.drawOval(PRF.getCenter().getX() - PRF.getWidth(), PRF.getCenter().getY() - PRF.getHeight(), PRF.getCenter().getX() + PRF.getWidth(), PRF.getCenter().getY() + PRF.getHeight(), paint); //PRF
+
+                    break;
+                case 2:
+                    paint.setColor(Color.argb(255,255,127,0));
+                    canvas.drawOval(PRF.getCenter().getX() - PRF.getWidth(), PRF.getCenter().getY() - PRF.getHeight(), PRF.getCenter().getX() + PRF.getWidth(), PRF.getCenter().getY() + PRF.getHeight(), paint); //PRF
+
+                    break;
+                case 3:
+                    paint.setColor(Color.RED);
+                    canvas.drawOval(PRF.getCenter().getX() - PRF.getWidth(), PRF.getCenter().getY() - PRF.getHeight(), PRF.getCenter().getX() + PRF.getWidth(), PRF.getCenter().getY() + PRF.getHeight(), paint); //PRF
+
+                    break;
+            }
+
+            switch(code_PRB){
+                case 0:
+                    paint.setColor(Color.GREEN);
+                    canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY() + PRB.getHeight(), paint); //PRB
+
+                    break;
+                case 1:
+                    paint.setColor(Color.YELLOW);
+                    canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY() + PRB.getHeight(), paint); //PRB
+
+                    break;
+                case 2:
+                    paint.setColor(Color.argb(255,255,127,0));
+                    canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY() + PRB.getHeight(), paint); //PRB
+
+                    break;
+                case 3:
+                    paint.setColor(Color.RED);
+                    canvas.drawOval(PRB.getCenter().getX() - PRB.getWidth(), PRB.getCenter().getY() - PRB.getHeight(), PRB.getCenter().getX() + PRB.getWidth(), PRB.getCenter().getY()+PRB.getHeight(), paint); //PRB
+
+                    break;
+            }
+
+
+
+
+
+
+
+
 
 
         }

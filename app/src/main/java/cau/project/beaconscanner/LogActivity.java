@@ -109,6 +109,7 @@ public class LogActivity extends AppCompatActivity {
         logView.setText(peripheral.toString());
 
 
+        /*
         bleConnector = new BLEConnector(this) {
             @Override
             protected void discoveryAvailableDevice(BluetoothDevice bluetoothDevice, int rssi, BeaconRecord record) {
@@ -147,7 +148,7 @@ public class LogActivity extends AppCompatActivity {
         bleConnector.startDiscovery();
 
 
-
+*/
 
     }
 
