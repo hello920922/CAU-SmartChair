@@ -36,6 +36,7 @@ public class ChairActivity extends AppCompatActivity {
     Bitmap bitmap;
     Bitmap b1;
     ImageView im;
+    private HashMap<String, String> myChairs;
 
     private TextView dataField;
     private TextView PRBField;
@@ -282,6 +283,9 @@ public class ChairActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_chair);
         intent = getIntent();
 
+        myChairs = (HashMap<String, String>)intent.getSerializableExtra("Map");
+        Log.d("Map","Recieve map Successfully");
+        Log.d("Map", "size of map : " + myChairs.size());
 
 
         m = new ChairView(this);

@@ -30,7 +30,7 @@ public class StartActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_ENROLL){
-            myChairs = (HashMap<String, String>)data.getExtras().getSerializable("Map");
+            myChairs = (HashMap<String,String>)data.getSerializableExtra("Map");
             Log.d("Map","Recieve map succesfully");
             Log.d("Map","size of Map = "+ myChairs.size());
         }
@@ -48,6 +48,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent mainIntent = new Intent(StartActivity.this, MainActivity.class);
+                mainIntent.putExtra("Map", myChairs);
                 startActivity(mainIntent);
 
             }
@@ -112,7 +113,7 @@ public class StartActivity extends AppCompatActivity {
             System.out.println("Error:" + e.getMessage());
         }
 
-        Log.i("map","size of map : " + myChairs.size());
+        Log.i("map", "size of map : " + myChairs.size());
 
     }
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -23,7 +24,8 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout peripheralList;
     private HashMap<String, Peripheral> peripheralMap;
     private Button btnScan;
-    private HashMap<String, String> myChairs;
+    private HashMap<String, String> myChairs = new HashMap<>();
+    private int REQUEST_NAME = 1;
 
     class Peripheral {
         private Button button;
@@ -79,7 +81,8 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
                         public void onClick(View v) {
                             Intent namingIntent = new Intent(EnrollActivity.this, NamingActivity.class);
                             namingIntent.putExtra("MacAddress", bluetoothDevice.getAddress());
-                            startActivity(namingIntent);
+                            namingIntent.putExtra("Map",myChairs);
+                            startActivityForResult(namingIntent, REQUEST_NAME);
 
 
                         }
@@ -96,6 +99,15 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         };
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == REQUEST_NAME){
+            myChairs = (HashMap<String,String>)data.getSerializableExtra("Map");
+            Log.d("Map","Recieve map succesfully");
+            Log.d("Map","size of Map = "+ myChairs.size());
+        }
     }
 
     @Override
@@ -117,11 +129,21 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void onBackButtonClicked(View v){
-        bleConnector.stopDiscovery();
-        bleConnector.disconnect();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        finish();
+        switch(keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                setResult(RESULT_OK, new Intent().putExtra("Map", myChairs));
+                finish();
+                break;
+
+            default:
+                return false;
+
+        }
+
+        return false;
     }
 
 

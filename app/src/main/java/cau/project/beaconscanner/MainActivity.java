@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout peripheralList;
     private HashMap<String, Peripheral> peripheralMap;
     private Button btnScan;
+    private HashMap<String, String> myChairs;
 
     class Peripheral {
         private Button button;
@@ -58,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         peripheralList = (LinearLayout)findViewById(R.id.list_peripheral);
         peripheralMap = new HashMap<>();
 
+        Intent intent = getIntent();
+        myChairs = (HashMap<String,String>)intent.getSerializableExtra("Map");
+        Log.d("Map","Recieve map Successfully");
+        Log.d("Map", "size of map : " + myChairs.size());
+
         bleConnector = new BLEConnector(this, new ReadInterface() {
             @Override
             public void read(byte[] data) {
@@ -79,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(bleConnector.getContext(), "Try to connect with " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, ChairActivity.class);
                             intent.putExtra("Address", bluetoothDevice.getAddress());
+                            intent.putExtra("Map",myChairs);
                             startActivity(intent);
                         }
                     });
