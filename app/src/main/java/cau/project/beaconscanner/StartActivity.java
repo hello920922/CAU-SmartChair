@@ -90,11 +90,11 @@ public class StartActivity extends AppCompatActivity {
         }
 
         try{
-            FileReader fr = null;
-            BufferedReader br = null;
-            String read = null;
-            String mac = null;
-            String name = null;
+            FileReader fr;
+            BufferedReader br;
+            String read;
+            String mac;
+            String name;
             fr = new FileReader(file);
             br = new BufferedReader(fr);
             while((read = br.readLine())!=null){
