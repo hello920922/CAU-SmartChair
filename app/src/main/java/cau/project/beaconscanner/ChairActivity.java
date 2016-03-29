@@ -240,14 +240,7 @@ public class ChairActivity extends AppCompatActivity {
                         break;
 
                 }
-
-
-
-
-
                 m.invalidate();
-
-
             }
             else{
                 Log.d("Cencor",sData);

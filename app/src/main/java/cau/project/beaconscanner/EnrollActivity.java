@@ -23,6 +23,7 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout peripheralList;
     private HashMap<String, Peripheral> peripheralMap;
     private Button btnScan;
+    private HashMap<String, String> myChairs;
 
     class Peripheral {
         private Button button;
@@ -48,6 +49,10 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        Intent intent = getIntent();
+        myChairs = (HashMap <String,String>)intent.getExtras().getSerializable("Map");
+        Log.d("Map","Recieve map Successfully");
+        Log.d("Map", "size of map : " + myChairs.size());
 
         btnScan = ((Button)findViewById(R.id.btn_scan));
         btnScan.setOnClickListener(this);
@@ -110,6 +115,13 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
                 bleConnector.stopDiscovery();
             }
         }
+    }
+
+    public void onBackButtonClicked(View v){
+        bleConnector.stopDiscovery();
+        bleConnector.disconnect();
+
+        finish();
     }
 
 
