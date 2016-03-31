@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,6 @@ public class ChairActivity extends AppCompatActivity {
     Bitmap b1;
     ImageView im;
     private HashMap<String, String> myChairs;
-
     private TextView dataField;
     private TextView PRBField;
     private TextView PLBField;
@@ -53,6 +53,8 @@ public class ChairActivity extends AppCompatActivity {
     private int PRB = -1 , PLB = -1 , PRF = -1 , PLF = -1 , RTilt = -1 , LTilt = -1;
     private String sData;
     private ChairView m;
+    private LinearLayout chairActivity;
+    private RelativeLayout logActivity;
 
 
     private BLEConnector bleConnector = new BLEConnector(this, new ReadInterface() {
@@ -290,6 +292,8 @@ public class ChairActivity extends AppCompatActivity {
 
         m = new ChairView(this);
 
+        chairActivity = (LinearLayout) findViewById(R.id.ChairActivity);
+        logActivity = (RelativeLayout) findViewById(R.id.LogActivity);
         FrameLayout frameLayout = (FrameLayout)findViewById(R.id.frameLayout);
         frameLayout.addView(m);
 
@@ -334,16 +338,8 @@ public class ChairActivity extends AppCompatActivity {
     }
 
     public void onLogButtonClicked(View v){
-        Intent newIntent = new Intent(ChairActivity.this, LogActivity.class);
-
-        newIntent.putExtra("Log", log.toString());
-        newIntent.putExtra("Address", intent.getStringExtra("Address"));
-        bleConnector.disconnect();
-        bleConnector.stopDiscovery();
-        startActivityForResult(newIntent, REQUEST_CHAIR);
-
-
-
+        chairActivity.setVisibility(LinearLayout.INVISIBLE);
+        logActivity.setVisibility(RelativeLayout.VISIBLE);
 
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,147 +10,198 @@
     tools:showIn="@layout/activity_chair">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/data"
-        android:text="Data : "
-        android:background="#FFFFFF9F"
-        />
-
-
-
-
-
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/LogActivity"
+        android:visibility="invisible">
 
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/TiltLayout"
-            android:layout_alignParentBottom="true"
-
-            android:background="#FFFFFF9F">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/RTilt"
-                android:text="RTilt: 0"
-                android:layout_weight="1"
-                android:layout_marginLeft="100dp"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/LTilt"
-                android:text="LTilt : 0"
-                android:layout_weight="1"
-                android:layout_marginLeft="50dp"
-                />
-        </LinearLayout>
-
-
-
-
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/PFLayout"
-            android:layout_above="@+id/TiltLayout"
-            android:background="#FFFFFF9F">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/PRF"
-                android:text="PRF : 0"
-                android:layout_weight="1"
-                android:layout_marginLeft="100dp"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/PLF"
-                android:text="PLF : 0"
-                android:layout_weight="1"
-                android:layout_marginLeft="50dp"
-                />
-
-        </LinearLayout>
-
-
-
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/PBLayout"
-            android:layout_above="@+id/PFLayout"
-            android:background="#FFFFFF9F">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/PRB"
-                android:layout_weight="1"
-                android:text="PRB : 0"
-                android:layout_marginLeft="100dp"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/PLB"
-                android:text="PLB : 0"
-                android:layout_weight="1"
-                android:layout_marginLeft="50dp"
-                />
-
-        </LinearLayout>
-
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/frameLayout"
-            android:layout_above="@+id/PBLayout"
-            >
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/imageView"/>
-
-        </FrameLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Log"
-            android:id="@+id/button"
-            android:onClick="onLogButtonClicked"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/Save"
+            android:layout_alignParentBottom="true"
+            android:text="Save to File"
+            android:onClick="onSaveButtonClicked"
+            />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Save"
+            android:text = "Back"
+            android:onClick="onBackButtonClicked"
+            android:id="@+id/back" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/back"
+            android:id="@+id/logScroll">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/log"/>
+        </ScrollView>
 
     </RelativeLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/ChairActivity"
+        android:visibility="visible">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/data"
+            android:text="Data : "
+            android:background="#FFFFFF9F"
+            />
+
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/TiltLayout"
+                android:layout_alignParentBottom="true"
+
+                android:background="#FFFFFF9F">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RTilt"
+                    android:text="RTilt: 0"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="100dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/LTilt"
+                    android:text="LTilt : 0"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="50dp"
+                    />
+            </LinearLayout>
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/PFLayout"
+                android:layout_above="@+id/TiltLayout"
+                android:background="#FFFFFF9F">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PRF"
+                    android:text="PRF : 0"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="100dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PLF"
+                    android:text="PLF : 0"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="50dp"
+                    />
+
+            </LinearLayout>
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/PBLayout"
+                android:layout_above="@+id/PFLayout"
+                android:background="#FFFFFF9F">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PRB"
+                    android:layout_weight="1"
+                    android:text="PRB : 0"
+                    android:layout_marginLeft="100dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PLB"
+                    android:text="PLB : 0"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="50dp"
+                    />
+
+            </LinearLayout>
+
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/frameLayout"
+                android:layout_above="@+id/PBLayout"
+                >
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imageView"/>
+
+            </FrameLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log"
+                android:id="@+id/button"
+                android:onClick="onLogButtonClicked"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>
