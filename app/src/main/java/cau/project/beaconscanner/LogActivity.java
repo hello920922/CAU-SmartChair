@@ -1,4 +1,7 @@
+
+
 package cau.project.beaconscanner;
+
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -102,14 +105,15 @@ public class LogActivity extends AppCompatActivity {
 
         peripheral = new Peripheral(new File(dir, "Chair.txt"));
 
+
         logView = (TextView) findViewById(R.id.log);
         saveButton = (Button) findViewById(R.id.Save);
         peripheral.append(intent.getStringExtra("Log"));
 
         logView.setText(peripheral.toString());
 
+/*
 
-        /*
         bleConnector = new BLEConnector(this) {
             @Override
             protected void discoveryAvailableDevice(BluetoothDevice bluetoothDevice, int rssi, BeaconRecord record) {
@@ -146,9 +150,9 @@ public class LogActivity extends AppCompatActivity {
         };
 
         bleConnector.startDiscovery();
-
-
 */
+
+
 
     }
 
@@ -190,6 +194,9 @@ public class LogActivity extends AppCompatActivity {
         finish();
     }
 
+
+
+
     public String makeLog(int data){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder builder = new StringBuilder();
@@ -210,6 +217,8 @@ public class LogActivity extends AppCompatActivity {
 
         return builder.toString();
     };
+
+
 
 
 

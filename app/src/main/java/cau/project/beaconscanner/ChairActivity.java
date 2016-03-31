@@ -12,12 +12,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,8 +48,6 @@ public class ChairActivity extends AppCompatActivity {
     private TextView RTiltField;
     private TextView LTiltField;
     private Intent intent;
-    private StringBuilder log = new StringBuilder();
-    private int REQUEST_CHAIR = 1001;
     private int value = -1;
     private int LValue = -1 ,RValue = -1;
     private int PRB = -1 , PLB = -1 , PRF = -1 , PLF = -1 , RTilt = -1 , LTilt = -1;
@@ -55,13 +55,29 @@ public class ChairActivity extends AppCompatActivity {
     private ChairView m;
     private LinearLayout chairActivity;
     private RelativeLayout logActivity;
+    private Peripheral peripheral;
+    private Boolean admitToSave = false;
+    private TextView logView;
+    private Button saveButton;
+    private ScrollView logScroll;
+    private int control;
+    private int LOG_ACTIVITY = 1;
+    private int CHAIR_ACTIVITY = 2;
+
 
 
     private BLEConnector bleConnector = new BLEConnector(this, new ReadInterface() {
         @Override
         public void read(byte[] data) {
             dataField.setText("Data  : " + new String(data));
-            log.append(makeLog(data));
+            peripheral.append(makeLog(data));
+            logView.setText(peripheral.toString());
+            logScroll.post(new Runnable() {
+                @Override
+                public void run() {
+                    logScroll.fullScroll(logScroll.FOCUS_DOWN);
+                }
+            });
             sData = new String(data);
             if(!sData.contains("?")){
                 value = Integer.parseInt(sData);
@@ -276,6 +292,43 @@ public class ChairActivity extends AppCompatActivity {
     };
 
 
+    class Peripheral {
+
+        private StringBuilder log;
+        private FileWriter writer;
+
+        public Peripheral(File filePath) {
+
+            log = new StringBuilder();
+            try {
+                writer = new FileWriter(filePath, true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void append(String log) {
+            this.log.append(log);
+
+            if(admitToSave == true) {
+                if (writer != null) {
+                    try {
+                        writer.write(log);
+                        writer.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        @Override
+        public String toString() {
+            return log.toString();
+        }
+
+    }
+
 
 
 
@@ -283,14 +336,27 @@ public class ChairActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chair);
+        control = CHAIR_ACTIVITY;
         intent = getIntent();
+        final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
+        Log.d("FILE", dir.getAbsolutePath());
+        if(!dir.exists())
+            try {
+                dir.mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         myChairs = (HashMap<String, String>)intent.getSerializableExtra("Map");
         Log.d("Map","Recieve map Successfully");
         Log.d("Map", "size of map : " + myChairs.size());
 
+        peripheral = new Peripheral(new File(dir, myChairs.get(intent.getStringExtra("Address"))+".txt"));
 
         m = new ChairView(this);
+        logScroll = (ScrollView) findViewById(R.id.logScroll);
+        logView = (TextView) findViewById(R.id.log);
+        saveButton = (Button) findViewById(R.id.Save);
 
         chairActivity = (LinearLayout) findViewById(R.id.ChairActivity);
         logActivity = (RelativeLayout) findViewById(R.id.LogActivity);
@@ -318,14 +384,7 @@ public class ChairActivity extends AppCompatActivity {
 
 
 
-        final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
-        Log.d("FILE", dir.getAbsolutePath());
-        if(!dir.exists())
-            try {
-                dir.mkdir();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
 
 
 
@@ -340,14 +399,51 @@ public class ChairActivity extends AppCompatActivity {
     public void onLogButtonClicked(View v){
         chairActivity.setVisibility(LinearLayout.INVISIBLE);
         logActivity.setVisibility(RelativeLayout.VISIBLE);
-
+        control = LOG_ACTIVITY;
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        log.delete(0,log.length());
-        log.append(data.getAction());
-        bleConnector.startDiscovery();
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        switch(keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                if(control == CHAIR_ACTIVITY){
+                    finish();
+                }
+                else if(control == LOG_ACTIVITY){
+                    logActivity.setVisibility(RelativeLayout.INVISIBLE);
+                    chairActivity.setVisibility(LinearLayout.VISIBLE);
+                    control=CHAIR_ACTIVITY;
+                }
+                break;
+
+            default:
+                return false;
+
+        }
+
+        return false;
     }
+
+
+
+    public void onSaveButtonClicked(View v){
+        if(admitToSave == true){
+            saveButton.setText("Save");
+            admitToSave = false;
+        }
+        else{
+            saveButton.setText("Stop");
+            admitToSave = true;
+        }
+    }
+    public void onBackButtonClicked(View v){
+        logActivity.setVisibility(RelativeLayout.INVISIBLE);
+        chairActivity.setVisibility(LinearLayout.VISIBLE);
+        control = CHAIR_ACTIVITY;
+    }
+
+
 
     public String makeLog(byte[] data){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
