@@ -107,7 +107,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 0:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair00, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -115,7 +115,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 1:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair01, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -123,7 +123,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 2:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair02, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -131,7 +131,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 3:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair03, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -146,7 +146,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 0:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair10, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -154,7 +154,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 1:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair11, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -162,7 +162,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 2:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair12, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -170,7 +170,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 3:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair13, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -186,7 +186,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 0:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair20, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -194,7 +194,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 1:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair21, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -202,7 +202,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 2:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair22, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -210,7 +210,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 3:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair23, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -225,7 +225,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 0:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair30, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -233,7 +233,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 1:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair31, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -241,7 +241,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 2:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair32, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
@@ -249,7 +249,7 @@ public class ChairActivity extends AppCompatActivity {
                             case 3:
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.chairs, options);
+                                bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.Chair33, options);
                                 b1 = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                                 im = (ImageView)findViewById(R.id.imageView);
                                 im.setImageBitmap(b1);
