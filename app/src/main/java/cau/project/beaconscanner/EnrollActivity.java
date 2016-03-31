@@ -38,10 +38,10 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_enroll);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_enroll);
 
         final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
         Log.d("FILE", dir.getAbsolutePath());
@@ -69,8 +69,12 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
         }) {
             @Override
             protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
-                final String buttonLabel = bluetoothDevice.getName() + "\n" + bluetoothDevice.getAddress() + "\n"
-                                        + record.getUuid() + "\n" + "Major : " + record.getMajor() + "\n" +"Minor : " + record.getMinor() + "\n" + "RSSI : " + rssi;
+
+                final String buttonLabel = "Name : " + myChairs.get(bluetoothDevice.getAddress()) + "\n" + bluetoothDevice.getName() + "\n" + bluetoothDevice.getAddress() + "\n"
+                        + record.getUuid() + "\n" + "Major : " + record.getMajor() + "\n" + "Minor : " + record.getMinor() + "\n" + "RSSI : " + rssi
+                        + "\n" + "Registered : " + myChairs.containsKey(bluetoothDevice.getAddress());
+
+
                 if(!peripheralMap.containsKey(bluetoothDevice.getAddress())) {
                     if(record.getUuid() == null){
                         return;

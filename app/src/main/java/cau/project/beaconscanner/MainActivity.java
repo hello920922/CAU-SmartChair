@@ -72,35 +72,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }) {
             @Override
             protected void discoveryAvailableDevice(final BluetoothDevice bluetoothDevice, final int rssi, final BeaconRecord record) {
-                final String buttonLabel = bluetoothDevice.getName() + "\n" + bluetoothDevice.getAddress() + "\n"
-                                        + record.getUuid() + "\n" + "Major : " + record.getMajor() + "\n" +"Minor : " + record.getMinor() + "\n" + "RSSI : " + rssi;
-                if(!peripheralMap.containsKey(bluetoothDevice.getAddress())) {
-                    if(record.getUuid() == null){
-                        return;
-                    }
-                    final Peripheral peripheral = new Peripheral(this.getContext());
-                    peripheral.getButton().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(bleConnector.getContext(), "Try to connect with " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, ChairActivity.class);
-                            intent.putExtra("Address", bluetoothDevice.getAddress());
-                            intent.putExtra("Map",myChairs);
-                            startActivity(intent);
+
+                if (myChairs.containsKey(bluetoothDevice.getAddress())) {
+                    final String buttonLabel = myChairs.get(bluetoothDevice.getAddress()) + "\n" + bluetoothDevice.getAddress() + "\n"
+                            + record.getUuid() + "\n" + "Major : " + record.getMajor() + "\n" + "Minor : " + record.getMinor() + "\n" + "RSSI : " + rssi;
+                    if (!peripheralMap.containsKey(bluetoothDevice.getAddress())) {
+                        if (record.getUuid() == null) {
+                            return;
                         }
-                    });
-                    peripheral.getButton().setText(buttonLabel);
-                    peripheralList.addView(peripheral.getButton());
-                    peripheralMap.put(bluetoothDevice.getAddress(), peripheral);
-                }
-                else{
+                        final Peripheral peripheral = new Peripheral(this.getContext());
+                        peripheral.getButton().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(bleConnector.getContext(), "Try to connect with " + bluetoothDevice.getName(), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this, ChairActivity.class);
+                                intent.putExtra("Address", bluetoothDevice.getAddress());
+                                intent.putExtra("Map", myChairs);
+                                startActivity(intent);
+                            }
+                        });
+                        peripheral.getButton().setText(buttonLabel);
+                        peripheralList.addView(peripheral.getButton());
+                        peripheralMap.put(bluetoothDevice.getAddress(), peripheral);
+                    } else {
 
-                    Peripheral peripheral = peripheralMap.get(bluetoothDevice.getAddress());
-                    peripheral.getButton().setText(buttonLabel);
+                        Peripheral peripheral = peripheralMap.get(bluetoothDevice.getAddress());
+                        peripheral.getButton().setText(buttonLabel);
 
+                    }
                 }
             }
-
         };
     }
 
