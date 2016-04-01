@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".StartActivity"
     tools:showIn="@layout/activity_start">
@@ -16,7 +15,7 @@
         android:background="#FFFFFFFF">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/enroll"
+            android:id="@+id/enrollButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -31,7 +30,7 @@
             android:clickable="true"
             android:src="@mipmap/zoom"
             android:layout_gravity="right|bottom"
-            android:id="@+id/search"/>
+            android:id="@+id/searchButton"/>
 
         <ImageView
             android:layout_width="match_parent"

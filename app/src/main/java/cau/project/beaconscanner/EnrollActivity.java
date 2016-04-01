@@ -29,7 +29,6 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
 
     class Peripheral {
         private Button button;
-
         public Peripheral(Context context){
             button = new Button(context);
         }
@@ -43,6 +42,8 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll);
 
+
+        //Search main directory and create if not exist.
         final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
         Log.d("FILE", dir.getAbsolutePath());
         if(!dir.exists())
@@ -51,16 +52,26 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+        //Get the intent that parent activity gives.
         Intent intent = getIntent();
+
+        //Get the hash map that parent activity transmit.
         myChairs = (HashMap <String,String>)intent.getExtras().getSerializable("Map");
         Log.d("Map","Recieve map Successfully");
         Log.d("Map", "size of map : " + myChairs.size());
 
+        //Find view that is in the layout.
         btnScan = ((Button)findViewById(R.id.btn_scan));
-        btnScan.setOnClickListener(this);
         peripheralList = (LinearLayout)findViewById(R.id.list_peripheral);
-        peripheralMap = new HashMap<>();
 
+        //Apply listenr to button.
+        btnScan.setOnClickListener(this);
+
+
+        //Complete abstract method of bleConnector.
+
+        peripheralMap = new HashMap<>();
         bleConnector = new BLEConnector(this, new ReadInterface() {
             @Override
             public void read(byte[] data) {

@@ -28,43 +28,49 @@ public class StartActivity extends AppCompatActivity {
     private HashMap<String, String> myChairs = new HashMap<>();
     private int REQUEST_ENROLL = 1;
 
+
+    //Get the hash map when called enroll activity is finished.
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == REQUEST_ENROLL){
-            myChairs = (HashMap<String,String>)data.getSerializableExtra("Map");
-            Log.d("Map","Recieve map succesfully");
-            Log.d("Map","size of Map = "+ myChairs.size());
+            if(resultCode == RESULT_OK) {
+                myChairs = (HashMap<String, String>) data.getSerializableExtra("Map");
+                Log.d("Map", "Recieve map succesfully");
+                Log.d("Map", "size of Map = " + myChairs.size());
+            }
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        FloatingActionButton search = (FloatingActionButton)findViewById(R.id.search);
-        final FloatingActionButton enroll = (FloatingActionButton)findViewById(R.id.enroll);
+        //Get the button of layout.
+        FloatingActionButton searchButton = (FloatingActionButton)findViewById(R.id.searchButton);
+        FloatingActionButton enrollButton = (FloatingActionButton)findViewById(R.id.enrollButton);
 
-        search.setOnClickListener(new View.OnClickListener() {
+
+        //Apply listener to button.
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mainIntent = new Intent(StartActivity.this, MainActivity.class);
                 mainIntent.putExtra("Map", myChairs);
                 startActivity(mainIntent);
-
             }
         });
 
-        enroll.setOnClickListener(new View.OnClickListener() {
+        enrollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent enrollIntent = new Intent(StartActivity.this, EnrollActivity.class);
                 enrollIntent.putExtra("Map",myChairs);
                 startActivityForResult(enrollIntent, REQUEST_ENROLL);
-
             }
         });
 
-
+        //Search main directory and create if not exist.
         final File dir = new File(Environment.getExternalStorageDirectory(), "BeaconScanner/");
         Log.d("FILE", dir.getAbsolutePath());
         if(!dir.exists())
@@ -74,6 +80,7 @@ public class StartActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+        //Search myChairs file and create if not exist.
         File file = new File(dir, "MyChairs.txt");
         if(!file.exists()) {
 
@@ -88,6 +95,8 @@ public class StartActivity extends AppCompatActivity {
                 System.out.println("Error:" + e.getMessage());
             }
         }
+
+        //Load myChairs file and put the data to myChairs hash map.
 
         try{
             FileReader fr;
