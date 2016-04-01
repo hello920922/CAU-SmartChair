@@ -139,6 +139,7 @@ public class EnrollActivity extends AppCompatActivity implements View.OnClickLis
         switch(keyCode){
             case KeyEvent.KEYCODE_BACK:
                 setResult(RESULT_OK, new Intent().putExtra("Map", myChairs));
+                bleConnector.stopDiscovery();
                 finish();
                 break;
 

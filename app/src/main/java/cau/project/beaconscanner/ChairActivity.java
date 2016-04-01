@@ -281,6 +281,7 @@ public class ChairActivity extends AppCompatActivity {
             }
 
             if(bluetoothDevice.getAddress().equals(intent.getStringExtra("Address"))){
+                bleConnector.stopDiscovery();
                 bleConnector.connectDevice(bluetoothDevice);
                 Toast.makeText(getApplicationContext(), "Connected!",Toast.LENGTH_LONG).show();
 
@@ -408,6 +409,7 @@ public class ChairActivity extends AppCompatActivity {
         switch(keyCode){
             case KeyEvent.KEYCODE_BACK:
                 if(control == CHAIR_ACTIVITY){
+                    bleConnector.disconnect();
                     finish();
                 }
                 else if(control == LOG_ACTIVITY){
