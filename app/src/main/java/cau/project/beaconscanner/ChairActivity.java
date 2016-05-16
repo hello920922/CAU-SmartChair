@@ -93,7 +93,7 @@ public class ChairActivity extends AppCompatActivity {
                 Log.d("Cencor", "PLF : " + PLF + ", PLB : " + PLB + ", LTilt : " + LTilt + ", PRF : " + PRF + ", PRB : " + PRB + ", RTilt : " + RTilt);
                 m.setCode(PLF, PLB, PRF, PRB);
 
-                PLFField.setText("PRB : " + PRB);
+                PLFField.setText("PLF : " + PLF);
                 PLBField.setText("PLB : " + PLB);
                 LTiltField.setText("LTilt : " + LTilt);
                 PRFField.setText("PRF : " + PRF);
@@ -284,6 +284,7 @@ public class ChairActivity extends AppCompatActivity {
                 bleConnector.stopDiscovery();
                 bleConnector.connectDevice(bluetoothDevice);
                 Toast.makeText(getApplicationContext(), "Connected!",Toast.LENGTH_LONG).show();
+                Log.i("BLE",Integer.toString(this.getState()));
 
             }
 
@@ -529,9 +530,9 @@ public class ChairActivity extends AppCompatActivity {
         float pOvalHeight = 20f;
 
         Oval PRB = new Oval(new Center(530f,1000f), pOvalWidth, pOvalHeight);
-        Oval PRF = new Oval(new Center(500f,1075f), pOvalWidth, pOvalHeight);
+        Oval PRF = new Oval(new Center(505f,1075f), pOvalWidth+15, pOvalHeight+10);
         Oval PLB = new Oval(new Center(935f,1000f), pOvalWidth, pOvalHeight);
-        Oval PLF = new Oval(new Center(985f,1075f), pOvalWidth, pOvalHeight);
+        Oval PLF = new Oval(new Center(980f,1075f), pOvalWidth+15, pOvalHeight+10);
         int code_PRB;
         int code_PRF;
         int code_PLB;
@@ -650,15 +651,6 @@ public class ChairActivity extends AppCompatActivity {
 
                     break;
             }
-
-
-
-
-
-
-
-
-
 
         }
     }
